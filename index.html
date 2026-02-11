@@ -1,381 +1,246 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Infinity Imsakiya</title>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Orbitron:wght@400;700&family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Imsakya - Celestial Gold</title>
+    <style>
+        :root {
+            --gold-primary: rgba(212, 175, 55, 1);
+            --gold-glow: rgba(255, 215, 0, 0.4);
+            --glass-bg: rgba(10, 10, 10, 0.7);
+            --text-light: #f4f4f4;
+        }
 
-<style>
-  :root {
-    --bg-deep: #050505;
-    --glass-bg: rgba(20, 20, 20, 0.6);
-    --glass-border: 1px solid rgba(255, 215, 0, 0.15);
-    --text-main: #ECECEC;
-    --text-dim: #9CA3AF;
-    --gold: #FFD700;
-    --accent-glow: 0 0 15px rgba(255, 215, 0, 0.2);
-  }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Segoe UI', sans-serif;
+            background: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: var(--text-light);
+        }
 
-  body {
-    background-color: var(--bg-deep);
-    color: var(--text-main);
-    font-family: 'Tajawal', sans-serif;
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
+        /* --- Starfield --- */
+        .stars-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at bottom, #0a1118 0%, #000 100%);
+        }
 
-  /* =========================================
-     1. خلفية النجوم المتحركة (Infinity Style)
-     ========================================= */
-  .stars {
-    position: absolute;
-    width: 100%; height: 100%;
-    background-image: 
-        radial-gradient(1px 1px at 50px 50px, white, transparent),
-        radial-gradient(1px 1px at 100px 150px, rgba(255,255,255,0.5), transparent),
-        radial-gradient(1.5px 1.5px at 200px 300px, white, transparent),
-        radial-gradient(2px 2px at 350px 80px, rgba(255,215,0,0.3), transparent);
-    background-size: 400px 400px;
-    animation: starAnim 60s linear infinite;
-    z-index: -1;
-  }
-  @keyframes starAnim { from { transform: translateY(0); } to { transform: translateY(-400px); } }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
 
-  /* =========================================
-     2. بطاقة الإمساكية الزجاجية
-     ========================================= */
-  .imsakiya-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: var(--glass-border);
-    border-radius: 24px;
-    padding: 30px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    position: relative;
-  }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
 
-  /* =========================================
-     3. القسم العلوي (العد التنازلي)
-     ========================================= */
-  .header-info {
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 15px;
-  }
+        /* --- Main Card --- */
+        .imsakya-card {
+            width: 90%;
+            max-width: 380px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(212, 175, 55, 0.1);
+            overflow: hidden;
+        }
 
-  .city-name {
-    font-size: 0.9rem;
-    color: var(--gold);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    display: flex; align-items: center; justify-content: center; gap: 5px;
-  }
+        .header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
 
-  .date-display {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    margin-top: 5px;
-  }
+        .location {
+            color: var(--gold-primary);
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin: 0;
+        }
 
-  .countdown-box {
-    margin: 20px 0;
-  }
+        .date-banner {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
 
-  .next-prayer-label {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-  }
+        /* --- Timer Slot --- */
+        .timer-slot {
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(212,175,55,0.05) 0%, transparent 100%);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
 
-  .countdown-timer {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--text-main);
-    text-shadow: 0 0 10px rgba(255,255,255,0.3);
-    margin-top: 5px;
-  }
+        .timer-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold-primary);
+            margin-bottom: 5px;
+        }
 
-  /* =========================================
-     4. جدول الصلوات
-     ========================================= */
-  .prayer-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+        .countdown {
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 0 15px var(--gold-glow);
+        }
 
-  .prayer-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.03);
-    transition: all 0.3s ease;
-  }
+        /* --- Table --- */
+        .time-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-  .prayer-name {
-    font-family: 'Amiri', serif;
-    font-size: 1.1rem;
-  }
+        .time-row.active {
+            background: rgba(212, 175, 55, 0.15);
+            border-left: 4px solid var(--gold-primary);
+        }
 
-  .prayer-time {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1rem;
-    color: var(--text-dim);
-  }
+        .label { font-size: 1rem; opacity: 0.9; }
+        .time { font-weight: bold; color: var(--gold-primary); }
 
-  /* تمييز الصلاة القادمة */
-  .prayer-row.active {
-    background: linear-gradient(90deg, rgba(255, 215, 0, 0.1), transparent);
-    border-right: 3px solid var(--gold);
-    box-shadow: var(--accent-glow);
-  }
-
-  .prayer-row.active .prayer-name,
-  .prayer-row.active .prayer-time {
-    color: var(--gold);
-    font-weight: bold;
-  }
-
-  /* أيقونات صغيرة (هلال/شمس) */
-  .icon-indicator { font-size: 0.8rem; margin-left: 5px; opacity: 0.7; }
-
-  /* زر الموقع */
-  .location-btn {
-    position: absolute;
-    top: 15px; left: 15px;
-    background: none; border: 1px solid rgba(255,255,255,0.2);
-    color: var(--text-dim);
-    border-radius: 50%; width: 30px; height: 30px;
-    cursor: pointer; font-size: 12px;
-    transition: 0.3s;
-  }
-  .location-btn:hover { border-color: var(--gold); color: var(--gold); }
-
-</style>
+        .footer {
+            padding: 15px;
+            text-align: center;
+            font-size: 0.7rem;
+            opacity: 0.5;
+        }
+    </style>
 </head>
 <body>
 
-  <div class="stars"></div>
+    <div class="stars-container" id="starfield"></div>
 
-  <div class="imsakiya-card">
-    <button class="location-btn" onclick="getLocation()" title="تحديث الموقع">📍</button>
-    
-    <div class="header-info">
-      <div class="city-name">
-        <span id="location-text">القاهرة، مصر</span>
-      </div>
-      <div class="date-display" id="date-text">-- / -- / ----</div>
+    <div class="imsakya-card">
+        <div class="header">
+            <h2 class="location">Cairo, Egypt</h2>
+            <div style="font-size: 0.8rem; opacity: 0.7;">23rd Shaban, 1447h</div>
+        </div>
+
+        <div class="date-banner">Wednesday, Feb 11, 2026</div>
+
+        <div class="timer-slot">
+            <div class="timer-label" id="next-prayer-name">Next Prayer In</div>
+            <div class="countdown" id="countdown">00:00:00</div>
+        </div>
+
+        <div class="timetable">
+            <div class="time-row" data-time="05:11">
+                <span class="label">Fajr</span>
+                <span class="time">05:11 AM</span>
+            </div>
+            <div class="time-row" data-time="12:10">
+                <span class="label">Dhuhr</span>
+                <span class="time">12:10 PM</span>
+            </div>
+            <div class="time-row" data-time="15:17">
+                <span class="label">Asr</span>
+                <span class="time">03:17 PM</span>
+            </div>
+            <div class="time-row" data-time="17:40">
+                <span class="label">Maghrib</span>
+                <span class="time">05:40 PM</span>
+            </div>
+            <div class="time-row" data-time="18:59">
+                <span class="label">Isha</span>
+                <span class="time">06:59 PM</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            Powered By: InfinityBlocks
+        </div>
     </div>
 
-    <div class="countdown-box">
-      <div class="next-prayer-label">المتبقى على <span id="next-prayer-name" style="color:var(--gold)">...</span></div>
-      <div class="countdown-timer" id="countdown">00:00:00</div>
-    </div>
-
-    <div class="prayer-list" id="prayer-list">
-      <div class="prayer-row" id="row-Fajr">
-        <span class="prayer-name">الفجر 🌑</span>
-        <span class="prayer-time" id="time-Fajr">--:--</span>
-      </div>
-      <div class="prayer-row" id="row-Sunrise">
-        <span class="prayer-name">الشروق ☀️</span>
-        <span class="prayer-time" id="time-Sunrise">--:--</span>
-      </div>
-      <div class="prayer-row" id="row-Dhuhr">
-        <span class="prayer-name">الظهر</span>
-        <span class="prayer-time" id="time-Dhuhr">--:--</span>
-      </div>
-      <div class="prayer-row" id="row-Asr">
-        <span class="prayer-name">العصر</span>
-        <span class="prayer-time" id="time-Asr">--:--</span>
-      </div>
-      <div class="prayer-row" id="row-Maghrib">
-        <span class="prayer-name">المغرب 🌙</span>
-        <span class="prayer-time" id="time-Maghrib">--:--</span>
-      </div>
-      <div class="prayer-row" id="row-Isha">
-        <span class="prayer-name">العشاء</span>
-        <span class="prayer-time" id="time-Isha">--:--</span>
-      </div>
-    </div>
-  </div>
-
-<script>
-  // ==========================================
-  // إعدادات افتراضية (القاهرة)
-  // ==========================================
-  let userLat = 30.0444;
-  let userLng = 31.2357;
-  let prayerTimes = {};
-  
-  // أسماء الصلوات للعرض
-  const prayerNamesAr = {
-    Fajr: "الفجر",
-    Sunrise: "الشروق",
-    Dhuhr: "الظهر",
-    Asr: "العصر",
-    Maghrib: "المغرب",
-    Isha: "العشاء"
-  };
-
-  // ==========================================
-  // 1. جلب البيانات من API (Aladhan)
-  // ==========================================
-  async function fetchPrayerTimes() {
-    const date = new Date();
-    // استخدام طريقة المسح المصرية (Method 5) كافتراضي، أو رابطة العالم الإسلامي
-    const apiURL = `https://api.aladhan.com/v1/timings/${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()}?latitude=${userLat}&longitude=${userLng}&method=5`;
-
-    try {
-      const response = await fetch(apiURL);
-      const data = await response.json();
-      
-      if(data.code === 200) {
-        prayerTimes = data.data.timings;
-        updateUI(data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching prayers:", error);
-      document.getElementById('location-text').innerText = "خطأ في الاتصال";
-    }
-  }
-
-  // ==========================================
-  // 2. تحديث الواجهة
-  // ==========================================
-  function updateUI(data) {
-    // التاريخ الهجري والميلادي
-    const hijri = data.date.hijri;
-    const gregorian = data.date.gregorian;
-    document.getElementById('date-text').innerText = `${hijri.day} ${hijri.month.ar} ${hijri.year} هـ  |  ${gregorian.date}`;
-    
-    // تحديث أوقات الصلوات في الجدول
-    for (const [key, value] of Object.entries(prayerTimes)) {
-      const row = document.getElementById(`row-${key}`);
-      const timeSpan = document.getElementById(`time-${key}`);
-      if (row && timeSpan) {
-        // تحويل الوقت من 24 إلى 12 ساعة
-        timeSpan.innerText = formatTime12(value);
-      }
-    }
-
-    startCountdown();
-  }
-
-  // ==========================================
-  // 3. منطق العد التنازلي وتحديد الصلاة القادمة
-  // ==========================================
-  function startCountdown() {
-    setInterval(() => {
-      const now = new Date();
-      let nextPrayerName = null;
-      let nextPrayerTime = null;
-      let minDiff = Infinity;
-
-      // ترتيب الصلوات للتحقق
-      const prayersOrdered = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
-
-      // إزالة الـ Highlight القديم
-      document.querySelectorAll('.prayer-row').forEach(row => row.classList.remove('active'));
-
-      for (let prayer of prayersOrdered) {
-        const timeStr = prayerTimes[prayer]; // "04:55"
-        if(!timeStr) continue;
-
-        const [hours, minutes] = timeStr.split(':');
-        const pDate = new Date();
-        pDate.setHours(hours, minutes, 0);
-
-        let diff = pDate - now;
-
-        // إذا كانت الصلاة مرت، تجاهلها لهذا اليوم
-        if (diff < 0) continue;
-
-        if (diff < minDiff) {
-          minDiff = diff;
-          nextPrayerName = prayer;
-          nextPrayerTime = pDate;
+    <script>
+        // 1. Generate Stars
+        const container = document.getElementById('starfield');
+        for (let i = 0; i < 120; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            const size = Math.random() * 2.5;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.setProperty('--duration', `${2 + Math.random() * 4}s`);
+            container.appendChild(star);
         }
-      }
 
-      // إذا انتهت صلوات اليوم (بعد العشاء)، القادمة هي الفجر غداً
-      if (!nextPrayerName) {
-        nextPrayerName = 'Fajr';
-        const [hours, minutes] = prayerTimes['Fajr'].split(':');
-        nextPrayerTime = new Date();
-        nextPrayerTime.setDate(nextPrayerTime.getDate() + 1);
-        nextPrayerTime.setHours(hours, minutes, 0);
-        minDiff = nextPrayerTime - now;
-      }
+        // 2. Countdown Logic
+        const prayers = [
+            { name: "Fajr", time: "05:11" },
+            { name: "Dhuhr", time: "12:10" },
+            { name: "Asr", time: "15:17" },
+            { name: "Maghrib", time: "17:40" },
+            { name: "Isha", time: "18:59" }
+        ];
 
-      // تحديث العد التنازلي
-      const hoursLeft = Math.floor((minDiff / (1000 * 60 * 60)) % 24);
-      const minutesLeft = Math.floor((minDiff / (1000 * 60)) % 60);
-      const secondsLeft = Math.floor((minDiff / 1000) % 60);
+        function updateCountdown() {
+            const now = new Date();
+            let nextPrayer = null;
 
-      document.getElementById('countdown').innerText = 
-        `${pad(hoursLeft)}:${pad(minutesLeft)}:${pad(secondsLeft)}`;
-      
-      document.getElementById('next-prayer-name').innerText = prayerNamesAr[nextPrayerName];
+            for (let p of prayers) {
+                const [hrs, mins] = p.time.split(':');
+                const pDate = new Date();
+                pDate.setHours(hrs, mins, 0);
 
-      // تمييز الصف النشط
-      const activeRow = document.getElementById(`row-${nextPrayerName}`);
-      if(activeRow) activeRow.classList.add('active');
+                if (pDate > now) {
+                    nextPrayer = { ...p, date: pDate };
+                    break;
+                }
+            }
 
-    }, 1000);
-  }
+            // If all prayers today passed, next is Fajr tomorrow
+            if (!nextPrayer) {
+                const [hrs, mins] = prayers[0].time.split(':');
+                const pDate = new Date();
+                pDate.setDate(pDate.getDate() + 1);
+                pDate.setHours(hrs, mins, 0);
+                nextPrayer = { ...prayers[0], date: pDate };
+            }
 
-  // ==========================================
-  // 4. أدوات مساعدة
-  // ==========================================
-  function formatTime12(time24) {
-    const [hours, minutes] = time24.split(':');
-    let h = parseInt(hours);
-    const suffix = h >= 12 ? 'م' : 'ص';
-    h = h % 12;
-    h = h ? h : 12; 
-    return `${h}:${minutes} ${suffix}`;
-  }
+            const diff = nextPrayer.date - now;
+            const h = Math.floor(diff / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
 
-  function pad(num) {
-    return num.toString().padStart(2, '0');
-  }
-
-  function getLocation() {
-    if (navigator.geolocation) {
-      document.getElementById('location-text').innerText = "جاري تحديد الموقع...";
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          userLat = position.coords.latitude;
-          userLng = position.coords.longitude;
-          document.getElementById('location-text').innerText = "موقعي الحالي";
-          fetchPrayerTimes();
-        },
-        (error) => {
-          document.getElementById('location-text').innerText = "القاهرة (افتراضي)";
-          fetchPrayerTimes(); // العودة للافتراضي عند الرفض
+            document.getElementById('next-prayer-name').innerText = `Time remaining for ${nextPrayer.name}`;
+            document.getElementById('countdown').innerText = 
+                `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            
+            // Highlight active row
+            document.querySelectorAll('.time-row').forEach(row => {
+                row.classList.remove('active');
+                if(row.innerText.includes(nextPrayer.name)) row.classList.add('active');
+            });
         }
-      );
-    } else {
-      alert("المتصفح لا يدعم تحديد الموقع");
-    }
-  }
 
-  // التشغيل الأولي
-  fetchPrayerTimes();
-
-</script>
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
 </body>
 </html>
